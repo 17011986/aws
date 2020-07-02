@@ -1,0 +1,42 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI-CD 
+env:
+  EB_PACKEGE_S3_BUCKET_NAME : "adv-it-vitaliu"
+  EB_APLICATION_NAME        : "MyFlask" 
+  EB_ENVIROMET_NAME         : "Myflask-env" 
+  DEPLOY_PACKEG_NAME        : "flask_app_${{ github.sha }}.zip"
+  AWS_REGIN_NAME            : "us-east-2"  
+
+on: 
+  push:
+    branches: 
+      - master
+jobs:
+  my_ci_part:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git clone our repo
+      - uses: actions/checkout@v1
+        name:  Create ZIP deployment package 
+        run: zip -r ${{ DEPLOY_PACKEG_NAME }} ./ -x *.git*
+      - name: Configure my AWS Credenteials
+        uses: aws-actions/configure-aws-credentials@1
+        with:
+          aws-access-key-id     :  ${{ secrets.My_AWS_ACCESS_KEY }}
+          aws-secret-accsess-key:  ${{ secret.MY_AWS_SECRET_KEY }}
+          aws-region            :  ${{ env.AWS_REGIN_NAME }}
+          
+      - name: copy Deployment packege to S3 bucket 
+        run: aws s3 cp ${{ env.DEPLOY_PACKEG_NAME }} s3://${{ env.EB_PACKEGE_S3_BUCKET_NAME}}/
+      - name: Print Happy for Ci finish
+        run : echo "Ci pipeline Finished successfully!
+      
+        
+      
+
+
+    
+
+     
+
