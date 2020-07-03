@@ -51,7 +51,7 @@ jobs:
     
     - name : Create new ElasticBeansttalk Application
       run : |
-        aws elasticbeanstalck create-application-version \
+        aws elasticbeanstalk create-application-version \
         -- application-name ${{ env.EB_APPLICATION_NAME }} \
         -- sourse-bundle S3bucket="${{ env.EB_PACKAGE_S3_BUCKET_NAME }}",S3Key="${{  env.DEPLOY_PACKAGE_NAME}}" \
         -- version-lable "Ver-${{ github.sha }}" \
